@@ -1,13 +1,16 @@
-use actix_web::{HttpServer, App, web, HttpResponse};
+use actix_files::NamedFile;
+use actix_web::{HttpRequest, Result};
+use std::path::PathBuf;
 
-const SERVER_ADDR: &str = "127.0.0.1:8080";
+fn index() -> Result<NamedFile> {
+    Ok(NamedFile::open("src/index.html")?)
+}
 
-pub fn main() {
-    HttpServer::new(|| {
-        App::new()
-          .route("/", web::get().to(|| HttpResponse::Ok().content_type("text/html; charset=utf-8").body(include_str!("./index.html"))))
-    })
-      .bind(SERVER_ADDR)
+fn main() {
+    use actix_web::{web, App, HttpServer};
+
+    HttpServer::new(|| App::new().route("/", web::get().to(index)))
+      .bind("127.0.0.1:8080")
       .unwrap()
       .run()
       .unwrap();

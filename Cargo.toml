@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 actix-web = { version = "1.0.4" }
+actix-files = "0.1.4"
